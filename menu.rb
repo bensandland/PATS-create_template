@@ -26,7 +26,7 @@ module Menu
 
    def Menu.usr_interact(txt, type)
       print "#{txt}: ".cyan
-      input = gets.chomp.downcase
+      input = gets.chomp
       if input.empty?
          return false
       else

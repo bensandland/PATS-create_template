@@ -5,7 +5,7 @@ module Func
    def Func.get_yes_no(input)
       find_yes = /\A(yes)\z|\A[y]\z/i # finds 'yes' or 'y'
       find_no = /\A(no)\z|\A[n]\z/i # finds 'no' or 'n'
-
+      input.downcase # downcase input to work around uppercase letters
       case input
       when find_yes then
          return true
