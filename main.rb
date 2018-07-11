@@ -5,6 +5,9 @@ require './menu'
 # TODO: create_dir function (for testsuites folder) - DONE
 # TODO: more 'error handling' - checks for existence of directories, files and folders and create exception-handling
 # TODO: implement while loops that reiterate if input is incorrect - DONE
+# TODO: make change_dir function check every folder and subfolder in path
+         # eg: If C:\test exists but C:\test\newProject doesn't - create 'newProject' within 'test'
+# TODO: Validate input on classname (illegal characters and capitalize first letter)
 
 start = true
 while start
@@ -65,7 +68,7 @@ while start
       end
    else
       # This code is only reached if user doesn't type yes/no or y/n
-      Menu.text("Invalid input!", :red)
+      puts "Invalid inputt!".red
       Menu.retry("Press enter to try again...")
       Menu.clear_screen()
    end

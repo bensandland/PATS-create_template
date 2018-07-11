@@ -77,7 +77,7 @@ module Menu
       when :success
          curr_dir = Menu.get_curr_dir
          Menu.title("success")
-         Menu.text("Project created in: #{curr_dir}")
+         puts "Project created in: #{curr_dir}"
       when :inconclusive
          Menu.title("completed")
          puts "No files were created - try validating your selected directory"

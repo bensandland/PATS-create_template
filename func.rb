@@ -43,10 +43,8 @@ class Func
       check_dir = Func.check_existence(chosen_dir)
       if check_dir # Check if dir exists
          Dir.chdir(chosen_dir)
-         puts "true"
          return true
       else
-         puts "false"
          return false
       end
    end
