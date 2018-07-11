@@ -11,7 +11,7 @@ while start
    Menu.title("pats project creator")
    get_dir = Menu.get_curr_dir
    puts "This your current active directory: #{get_dir}"
-   Menu.text("Would you like to change it?", :green)
+   puts "Would you like to change it?".green
    dir_change = Menu.usr_interact(:confirm)
 
    if dir_change == 1
