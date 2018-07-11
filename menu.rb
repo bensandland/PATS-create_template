@@ -1,7 +1,6 @@
 require 'colorize'
 require './func'
 
-
 module Menu
    def Menu.title(txt)
       puts "******* #{txt} *******".upcase.yellow
@@ -56,32 +55,8 @@ module Menu
          else
             puts "'run.bat' already exists! - skipping...".yellow
          end
-
-
-         # if Func.check_existence("target.rb") && Func.check_existence("run.bat")  # target already exists
-         #    puts "'target.rb' already exists! - skipping...".yellow
-         #    puts "'run.bat' already exists! - skipping...".yellow
-         #    #return 0
-         # elsif Func.check_existence("run.bat")
-         #    Func.create_file(classname, :ruby)
-         #    puts "'run.bat' already exists! - skipping...".yellow
-         #    puts "Please make sure the classname in run.bat and target.rb are the same!".yellow
-         #    puts "'target.rb' was successfully created!".green
-         #    #return 1
-         # elsif Func.check_existence("target.rb")
-         #    Func.create_file(classname, :bat)
-         #    puts "'target.rb' already exists! - skipping...".yellow
-         #    puts "'run.bat' was successfully created!".green
-         #    #return 2
-         # else
-         #    Func.create_file(classname, :bat)
-         #    Func.create_file(classname, :bat)
-         # end
-
-
       end
    end
-
 
    def Menu.clear_screen()
       if RUBY_PLATFORM =~ /win32|win64|\.NET|windows|cygwin|mingw32/i

@@ -3,7 +3,6 @@ require 'colorize'
 
 class Func
    attr_accessor :classname, :state
-
    @state = 0
 
    def Func.incr_state
@@ -39,25 +38,6 @@ class Func
          return false
       end
    end
-
-   # def Func.check_extension(input)
-   #    find_rb = /\.(?:rb)$/ # finds '.rb' at end of string
-   #    find_bat = /\.(?:bat)$/ # finds '.bat' at end of string
-   #
-   #    case input
-   #    when find_rb
-   #       return true
-   #    when find_bat
-   #       return true
-   #    else
-   #       puts "ERROR - something went wrong inside #{__method__}!".red
-   #    end
-   # end
-
-   # def Func.get_classname(input)
-   #    input[0] = input.capitalize[0] unless input.nil?
-   #    return input
-   # end
 
    def Func.change_dir(chosen_dir)
       check_dir = Func.check_existence(chosen_dir)
