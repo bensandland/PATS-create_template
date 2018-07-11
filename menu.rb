@@ -1,80 +1,87 @@
 require 'colorize'
 require './func'
 
+
 module Menu
    def Menu.title(txt)
       puts "******* #{txt} *******".upcase.yellow
    end
 
-   def Menu.text(txt, type = :default)
+   def Menu.retry(txt)
+      print "#{txt}".light_cyan
+      gets
+   end
+
+   def Menu.usr_interact(type)
       case type
-      when :default
-         puts "#{txt}"
-      when :green
-         puts "#{txt}".green
-      when :cyan
-         puts "#{txt}".cyan
-      when :lb
-         puts "#{txt}".light_blue
-      when :red
-         puts "#{txt}".red
-      when :retry
-         print "#{txt}".yellow
-         gets
+      when :confirm
+         input = Menu.get_usrinteract_input("Y/N")
+         if input
+            return Func.get_yes_no(input)
+         end
+
+      when :change_dir
+         input = Menu.get_usrinteract_input("Enter directory")
+         if input
+            return Func.change_dir(input)
+         end
+
+      when :classname
+         input = Menu.get_usrinteract_input("Class name")
+         if input
+            Func.set_classname = input
+         end
+
+      when :create_files
+         classname = Func.get_classname()
+         testsuite_folder = Func.create_folder()
+         if testsuite_folder
+            puts "'testsuites' folder successfully created!".green
+         else
+            puts "non-empty 'testsuites' folder already exists! - skipping...".yellow
+         end
+
+         if !Func.check_existence("target.rb") # target.rb doesn't exist
+            Func.create_file(classname, :ruby)
+            puts "'target.rb' was successfully created!".green
+            Func.incr_state
+         else
+            puts "'target.rb' already exists! - skipping...".yellow
+         end
+
+         if !Func.check_existence("run.bat") # run.bat doesn't exist
+            Func.create_file(classname, :bat)
+            puts "'run.bat' was successfully created!".green
+            Func.incr_state
+         else
+            puts "'run.bat' already exists! - skipping...".yellow
+         end
+
+
+         # if Func.check_existence("target.rb") && Func.check_existence("run.bat")  # target already exists
+         #    puts "'target.rb' already exists! - skipping...".yellow
+         #    puts "'run.bat' already exists! - skipping...".yellow
+         #    #return 0
+         # elsif Func.check_existence("run.bat")
+         #    Func.create_file(classname, :ruby)
+         #    puts "'run.bat' already exists! - skipping...".yellow
+         #    puts "Please make sure the classname in run.bat and target.rb are the same!".yellow
+         #    puts "'target.rb' was successfully created!".green
+         #    #return 1
+         # elsif Func.check_existence("target.rb")
+         #    Func.create_file(classname, :bat)
+         #    puts "'target.rb' already exists! - skipping...".yellow
+         #    puts "'run.bat' was successfully created!".green
+         #    #return 2
+         # else
+         #    Func.create_file(classname, :bat)
+         #    Func.create_file(classname, :bat)
+         # end
+
+
       end
    end
 
-   def Menu.usr_interact(txt, type)
-      print "#{txt}: ".cyan
-      input = gets.chomp
-      if input.empty?
-         return false
-      else
-         case type
-         when :confirm
-            Func.get_yes_no(input)
-            if Func.get_yes_no(input) # check if true
-               return "yes"
-            else
-               return "no"
-            end
-         when :change_dir
-            Func.change_dir(input)
-            if Func.change_dir(input) # check if true
-               pretty_dir = "#{input}".yellow
-               puts "Directory changed to: #{pretty_dir}"
-               return true
-            else
-               return false
-            end
-         when :filename
-            Func.check_extension(input)
-            if Func.check_extension(input) # check if input string contains anything
-               return true
-            else
-               return false
-            end
-         when :create_files
-            classname = Func.get_classname(input)
-            if classname
-               target_file = Func.create_file(input, :ruby)
-               bat_file = Func.create_file(input, :bat)
-               if target_file and bat_file
-                  puts "'target.rb' and 'run.bat' was successfully created!".green
-                  return true
-               else
-                  dir = Menu.get_curr_dir()
-                  puts "target.rb already exists in: #{dir}".red
-                  return false
-               end
-            else
-               puts "Classname was empty!".red
-            end
-         else
-            puts "ERROR - no case was entered!".red
-         end
-      end
-   end
 
    def Menu.clear_screen()
       if RUBY_PLATFORM =~ /win32|win64|\.NET|windows|cygwin|mingw32/i
@@ -90,9 +97,25 @@ module Menu
       return pretty_dir
    end
 
-   def Menu.succes()
-      curr_dir = Menu.get_curr_dir
-      Menu.title("success")
-      Menu.text("Empty project created in: #{curr_dir}")
+   def Menu.end(type)
+      case type
+      when :success
+         curr_dir = Menu.get_curr_dir
+         Menu.title("success")
+         Menu.text("Project created in: #{curr_dir}")
+      when :inconclusive
+         Menu.title("completed")
+         puts "No files were created - try validating your selected directory"
+      end
+   end
+
+   def Menu.get_usrinteract_input(txt)
+      print "#{txt}: ".cyan
+      input = gets.chomp
+      if input.empty?
+         return false
+      else
+         return input
+      end
    end
 end

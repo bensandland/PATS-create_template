@@ -3,60 +3,75 @@ require './menu'
 
 # TODO: create_file function (for target.rb and run.bat) - DONE
 # TODO: create_dir function (for testsuites folder) - DONE
-# TODO: more 'error handling' - checks for existence of directories, files and folders
+# TODO: more 'error handling' - checks for existence of directories, files and folders and create exception-handling
 # TODO: implement while loops that reiterate if input is incorrect - DONE
+
 start = true
 while start
    Menu.title("pats project creator")
    get_dir = Menu.get_curr_dir
    puts "This your current active directory: #{get_dir}"
    Menu.text("Would you like to change it?", :green)
-   dir_change = Menu.usr_interact("Y/N", :confirm)
+   dir_change = Menu.usr_interact(:confirm)
 
-   if dir_change == "yes"
+   if dir_change == 1
       start = false
       selecting = true
       while selecting
          Menu.clear_screen()
          Menu.title("change directory")
-         Menu.text("Active dir: #{get_dir}")
-         check_dir = Menu.usr_interact("Enter directory", :change_dir)
+         puts "Active dir: #{get_dir}"
+         check_dir = Menu.usr_interact(:change_dir)
          if check_dir
             Menu.title("create files")
-            Menu.text("Please enter the name to use for class of target.rb file")
-            files = Menu.usr_interact("target.rb classname", :create_files)
-            if files
-               selecting = false
-               Menu.succes()
+            puts "Please enter the class name to use for target.rb and run.bat"
+            classname = Menu.usr_interact(:classname)
+            if classname
+               Menu.usr_interact(:create_files)
+               state = Func.get_state
+               if state > 0
+                  selecting = false
+                  Menu.end(:success)
+               else # state is 0 - no files were created
+                  selecting = false
+                  Menu.end(:inconclusive)
+               end
             end
          else
-            Menu.text("Directory doesn't exist!", :red)
-            Menu.text("Press enter to try again..", :retry)
+            puts "Directory doesn't exist!".red
+            Menu.retry("Press enter to try again..")
             Menu.clear_screen()
          end
       end
 
-   elsif dir_change == "no"
+   elsif dir_change == 0
       start = false
       selecting = true
       while selecting
          Menu.title("create files")
-         Menu.text("Please enter the name to use for class of target.rb file")
-         files = Menu.usr_interact("target.rb classname", :create_files)
-         if files
-            selecting = false
-            Menu.succes()
-         else
-            Menu.text("Name was empty!", :red)
-            Menu.text("Press enter to try again..", :retry)
+         puts "Please enter the class name to use for target.rb and run.bat"
+         classname = Menu.usr_interact(:classname)
+         if classname
+            Menu.usr_interact(:create_files)
+            state = Func.get_state
+            if state > 0
+               selecting = false
+               Menu.end(:success)
+            else # state is 0 - no files were created
+               selecting = false
+               Menu.end(:inconclusive)
+            end
          end
       end
+   else
+      # This code is only reached if user doesn't type yes/no or y/n
+      Menu.text("Invalid input!", :red)
+      Menu.retry("Press enter to try again...")
+      Menu.clear_screen()
    end
-   # This code is only reached if user doesn't type yes/no or y/n
-   Menu.text("Invalid input!", :red)
-   Menu.text("Press enter to try again...", :retry)
-   Menu.clear_screen()
 end
+
+
 
 
 
